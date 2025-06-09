@@ -1,0 +1,109 @@
+<lib-toastify-toast-container
+  [position]="'top-right'"
+  [transition]="'flip'"
+></lib-toastify-toast-container>
+<body
+  [ngClass]="getWeatherBackgroundClass()"
+  class="font-sans antialiased flex items-center justify-center min-h-screen p-4"
+>
+  <!-- Parent vertical container -->
+  <div class="flex flex-col items-center space-y-6 w-full max-w-md">
+    <!-- Input for adding city -->
+    <div class="w-full">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Enter city</mat-label>
+        <input
+          matInput
+          placeholder="e.g., Lucknow"
+          [(ngModel)]="selectedCity"
+          class="!text-black-100 !placeholder-black"
+          (keyup.enter)="getCurrentWeather()"
+        />
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        class="mt-2 w-full"
+        (click)="getCurrentWeather()"
+      >
+        Get Weather
+      </button>
+    </div>
+
+    <!-- Weather Card -->
+    <div
+      *ngIf="weatherData"
+      class="w-full rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 ease-in-out"
+    >
+      <!-- Header -->
+      <div class="bg-blue-500 p-6 text-white">
+        <h1 class="text-2xl font-bold">
+          Weather in {{ weatherData.location.name }}
+        </h1>
+        <p class="text-sm text-blue-100">
+          {{ weatherData.location.region }}, {{ weatherData.location.country }}
+        </p>
+        <p class="text-xs mt-1">
+          Local Time: {{ weatherData.location.localtime }}
+        </p>
+      </div>
+
+      <!-- Main Weather Info -->
+      <div class="flex items-center justify-between p-6">
+        <div class="flex items-center space-x-4">
+          <img
+            src="{{ weatherData.current.condition.icon }}"
+            alt="Weather Icon"
+            class="w-16 h-16"
+          />
+          <div>
+            <p class="text-4xl font-semibold text-gray-800">
+              {{ weatherData.current.temp_c }}
+            </p>
+            <p class="text-sm text-gray-500">
+              Feels like {{ weatherData.current.feelslike_c }}°C
+            </p>
+            <p class="text-sm text-gray-600">
+              {{ weatherData.current.condition.text }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div
+        class="grid grid-cols-2 gap-4 p-6 border-t border-gray-200 text-sm text-gray-700"
+      >
+        <div>
+          <p class="font-medium text-gray-600">Humidity</p>
+          <p>{{ weatherData.current.humidity }}</p>
+        </div>
+        <div>
+          <p class="font-medium text-gray-600">Wind</p>
+          <p>{{ weatherData.current.wind_kph }} kph NW</p>
+        </div>
+        <div>
+          <p class="font-medium text-gray-600">Pressure</p>
+          <p>{{ weatherData.current.pressure_mb }} mb</p>
+        </div>
+        <div>
+          <p class="font-medium text-gray-600">Visibility</p>
+          <p>{{ weatherData.current.vis_km }} km</p>
+        </div>
+        <div>
+          <p class="font-medium text-gray-600">UV Index</p>
+          <p>{{ weatherData.current.uv }}</p>
+        </div>
+        <div>
+          <p class="font-medium text-gray-600">Cloud Cover</p>
+          <p>{{ weatherData.current.cloud }}</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-gray-100 p-4 text-center text-sm text-gray-500">
+        Updated at: {{ weatherData.location.localtime }}
+      </div>
+    </div>
+  </div>
+</body>
